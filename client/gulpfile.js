@@ -41,7 +41,10 @@ gulp.task('css', function() {
 });
 
 gulp.task('javascript', function() {
-  browserify(SOURCE.FOLDER + '/' + SOURCE.APPLICATION_SCRIPT)
+  browserify({
+    entries: SOURCE.FOLDER + '/' + SOURCE.APPLICATION_SCRIPT,
+    debug: true
+  })
   .transform(reactify)
   .bundle()
   .pipe(source(BUILD.APPLICATION_SCRIPT))
