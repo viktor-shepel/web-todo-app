@@ -1,8 +1,8 @@
 # Ubuntu setup
 DB
 ```bash
-# command line tool for PostgreSQL
-sudo apt-get install postgresql
+# install whole PostgreSQL package
+sudo apt-get install postgresql postgresql-client postgresql-contrib
 
 # change password for Ubuntu's postgres user
 sudo passwd postgres 
