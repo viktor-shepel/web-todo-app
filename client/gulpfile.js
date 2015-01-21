@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var clean = require('gulp-clean');
 var connect = require('gulp-connect');
+var shell = require('gulp-shell');
 var source = require("vinyl-source-stream");
 var browserify = require('browserify');
 var reactify = require('reactify');
@@ -65,6 +66,10 @@ gulp.task('livereload', function() {
     livereload: true
   });
 });
+
+gulp.task('db:migrate',
+  shell.task('node ../node_modules/db-migrate/bin/db-migrate up -m ../server/db/migrations/ --config ../server/db/config.json -e development --verbose')
+);
 
 // task declaration
 gulp.task('build', ['clean', 'html', 'css', 'javascript']);

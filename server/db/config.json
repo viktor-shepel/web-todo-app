@@ -1,0 +1,23 @@
+{
+  "development": {
+    "database": "todo",
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "user": "postgres",
+    "password": "Softindex"
+  },
+  "test": {
+    "database": "todo",
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "user": "postgres",
+    "password": "Softindex"
+  },
+  "production": {
+    "database": "todo",
+    "driver": "pg",
+    "host": "127.0.0.1",
+    "user": "postgres",
+    "password": "Softindex"
+  }
+}

@@ -10,9 +10,12 @@
   "license": "ISC",
   "devDependencies": {
     "browserify": "^8.1.1",
+    "db-migrate": "^0.8.0",
     "gulp": "^3.8.10",
     "gulp-clean": "^0.3.1",
     "gulp-connect": "^2.2.0",
+    "gulp-shell": "^0.2.11",
+    "pg": "^4.2.0",
     "reactify": "^0.17.1",
     "vinyl-source-stream": "^1.0.0"
   },
