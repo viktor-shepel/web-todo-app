@@ -3,6 +3,7 @@
     "database": "todo",
     "driver": "pg",
     "host": "127.0.0.1",
+    "port": 5432,
     "user": "postgres",
     "password": "Softindex"
   },
@@ -10,6 +11,7 @@
     "database": "todo",
     "driver": "pg",
     "host": "127.0.0.1",
+    "port": 5432,
     "user": "postgres",
     "password": "Softindex"
   },
@@ -17,6 +19,7 @@
     "database": "todo",
     "driver": "pg",
     "host": "127.0.0.1",
+    "port": 5432,
     "user": "postgres",
     "password": "Softindex"
   }

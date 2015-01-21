@@ -1,9 +1,11 @@
 'use strict'
 
 var express = require('express');
+var TodosModel = require('../models').Todos;
 
 function getAllTodos(request, response, next) {
   console.log('all');
+  console.log(TodosModel);
   response.send('Ok');
 }
 
