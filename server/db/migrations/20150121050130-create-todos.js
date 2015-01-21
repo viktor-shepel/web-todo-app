@@ -2,7 +2,7 @@ var TABLE_NAME = 'todos';
 
 exports.up = function(db, callback) {
   db.createTable(TABLE_NAME, {
-    id: {type: 'int', primaryKey: true},
+    id: {type: 'int', primaryKey: true, autoIncrement: true},
     message: 'string'
   }, callback);
 };
