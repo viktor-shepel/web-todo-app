@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var clean = require('gulp-clean');
 var connect = require('gulp-connect');
 var shell = require('gulp-shell');
+var server = require('gulp-develop-server');
 var source = require("vinyl-source-stream");
 var browserify = require('browserify');
 var reactify = require('reactify');
@@ -15,6 +16,11 @@ var SOURCE = {
     APPLICATION_VIEW: 'index.html',
     APPLICATION_STYLE: 'application.css',
     APPLICATION_SCRIPT: 'application.jsx'
+  },
+  SERVER: {
+    FOLDER: './server/sources',
+    SCRIPTS: './server/sources/**/*.js',
+    APPLICATION_SCRIPT: 'application.js'
   }
 };
 
@@ -73,6 +79,7 @@ gulp.task('watch', function() {
   gulp.watch(SOURCE.CLIENT.MARKUPS, ['html']);
   gulp.watch(SOURCE.CLIENT.STYLES, ['css']);
   gulp.watch(SOURCE.CLIENT.SCRIPTS, ['javascript']);
+  gulp.watch(SOURCE.SERVER.SCRIPTS, server.restart);
 });
 
 gulp.task('livereload', function() {
@@ -94,9 +101,9 @@ gulp.task('db:drop',
   shell.task('node ./node_modules/db-migrate/bin/db-migrate down -m ./server/db/migrations/ --config ./server/db/config.json -e development --verbose')
 );
 
-gulp.task('server:start',
-  shell.task('node server/sources/application.js')
-);
+gulp.task('server:start', function() {
+  server.listen({path: SOURCE.SERVER.FOLDER + '/' + SOURCE.SERVER.APPLICATION_SCRIPT});
+});
 
 // task declaration
 gulp.task('build', ['clean', 'html', 'css', 'javascript']);
