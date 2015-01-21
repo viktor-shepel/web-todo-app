@@ -23,6 +23,18 @@ var BUILD = {
   APPLICATION_SCRIPT: 'application.js'
 };
 
+var SERVER_PORT = 3000;
+var PROXY_PORT = 9000;
+var SERVER_API_ROOT = '/api';
+
+function setupProxy() {
+  var url = require('url');
+  var proxy = require('proxy-middleware');
+  var options = url.parse('http://localhost:' + SERVER_PORT + SERVER_API_ROOT);
+  options.route = SERVER_API_ROOT;
+  return proxy(options);
+}
+
 // task definition
 gulp.task('clean', function() {
   gulp.src(BUILD.FOLDER)
@@ -62,8 +74,11 @@ gulp.task('watch', function() {
 gulp.task('livereload', function() {
   connect.server({
     root: BUILD.FOLDER,
-    port: 9000,
-    livereload: true
+    port: PROXY_PORT,
+    livereload: true,
+    middleware: function(connect, o) {
+      return [setupProxy()];
+    }
   });
 });
 
@@ -81,5 +96,5 @@ gulp.task('server:start',
 
 // task declaration
 gulp.task('build', ['clean', 'html', 'css', 'javascript']);
-gulp.task('development', ['build', 'livereload', 'watch']);
+gulp.task('development', ['build', 'livereload', 'watch', 'server:start']);
 
