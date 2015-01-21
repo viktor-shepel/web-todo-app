@@ -161,7 +161,7 @@
         }
     });
 
-    var model = new TodoModel('react-todos', new TodoProviderDB()); // should be handled by DependecyInjection system
+    var model = new TodoModel(new TodoProviderDB()); // should be handled by DependecyInjection system
 
     function render() {
         React.render(

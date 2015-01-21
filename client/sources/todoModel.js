@@ -9,8 +9,7 @@
     // may not even be worth separating this logic
     // out, but we do this to demonstrate one way to
     // separate out parts of your application.
-    var TodoModel = function (key, data_provider) {
-        this.key = key;
+    var TodoModel = function (data_provider) {
         this.todos = [];
         this.onChanges = [];
         this.data_provider_ = data_provider;
@@ -45,7 +44,6 @@
     };
 
     TodoModel.prototype.inform = function () {
-        Utils.store(this.key, this.todos);
         this.onChanges.forEach(function (cb) { cb(); });
     };
 
