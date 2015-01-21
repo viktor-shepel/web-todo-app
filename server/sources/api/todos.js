@@ -4,25 +4,49 @@ var express = require('express');
 var TodosModel = require('../models').Todos;
 
 function getAllTodos(request, response, next) {
-  console.log('all');
-  console.log(TodosModel);
-  response.send('Ok');
+  TodosModel.all()
+  .then(function(data) {
+    response.send(data);
+  }, function(error) {
+    console.error(error);
+  });
 }
 
 function getTodosById(request, response, next) {
-  console.log('specific');
+  TodosModel.find(Number(request.params.id))
+  .then(function(data) {
+    response.send(data);
+  }, function(error) {
+    console.error(error);
+  });
 }
 
 function createTodo(request, response, next) {
-  console.log('create');
+  TodosModel.create(request.body)
+  .then(function(data) {
+    response.send(data);
+  }, function(error) {
+    console.error(error);
+  });
 }
 
 function updateTodo(request, response, next) {
+  TodosModel.update(request.body, {where: {id: Number(request.params.id)}})
+  .then(function(data) {
+    response.send(data);
+  }, function(error) {
+    console.error(error);
+  });
   console.log('update');
 }
 
 function deleteTodo(request, response, next) {
-  console.log('delete');
+  TodosModel.destroy({where: {id: Number(request.params.id)}})
+  .then(function(data) {
+    response.send(data);
+  }, function(error) {
+    console.error(error);
+  });
 }
 
 module.exports = express.Router()

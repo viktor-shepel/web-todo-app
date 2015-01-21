@@ -10,6 +10,6 @@ var DB_CONFIG = require(path.join(__dirname, '../../db/config.json')).developmen
 var connection = new Sequelize(createConnectionUri(DB_CONFIG));
 
 module.exports = {
-  Todos: {}
+  Todos: require('./todos.js')(connection)
 };
 
