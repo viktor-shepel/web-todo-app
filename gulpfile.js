@@ -7,17 +7,17 @@ var browserify = require('browserify');
 var reactify = require('reactify');
 
 var SOURCE = {
-  FOLDER: './sources',
-  MARKUPS: './sources/**/*.html',
-  STYLES: './sources/**/*.css',
-  SCRIPTS: './sources/**/*.jsx',
+  FOLDER: './client/sources',
+  MARKUPS: './client/sources/**/*.html',
+  STYLES: './client/sources/**/*.css',
+  SCRIPTS: './client/sources/**/*.jsx',
   APPLICATION_VIEW: 'index.html',
   APPLICATION_STYLE: 'application.css',
   APPLICATION_SCRIPT: 'application.jsx'
 };
 
 var BUILD = {
-  FOLDER: './build',
+  FOLDER: './client/build',
   APPLICATION_VIEW: 'index.html',
   APPLICATION_STYLE: 'application.css',
   APPLICATION_SCRIPT: 'application.js'
@@ -68,11 +68,11 @@ gulp.task('livereload', function() {
 });
 
 gulp.task('db:migrate',
-  shell.task('node ../node_modules/db-migrate/bin/db-migrate up -m ../server/db/migrations/ --config ../server/db/config.json -e development --verbose')
+  shell.task('node ./node_modules/db-migrate/bin/db-migrate up -m ./server/db/migrations/ --config ./server/db/config.json -e development --verbose')
 );
 
 gulp.task('db:drop',
-  shell.task('node ../node_modules/db-migrate/bin/db-migrate down -m ../server/db/migrations/ --config ../server/db/config.json -e development --verbose')
+  shell.task('node ./node_modules/db-migrate/bin/db-migrate down -m ./server/db/migrations/ --config ./server/db/config.json -e development --verbose')
 );
 
 // task declaration
