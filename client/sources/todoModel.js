@@ -3,6 +3,8 @@
     'use strict';
 
     var Utils = require('./utils.js');
+    var $ = require('jquery-browserify');
+    var errorLogger = console.log.bind(console);
     // Generic "model" object. You can use whatever
     // framework you want. For this application it
     // may not even be worth separating this logic
@@ -10,8 +12,32 @@
     // separate out parts of your application.
     var TodoModel = function (key) {
         this.key = key;
-        this.todos = Utils.store(key);
+        this.todos = [];
         this.onChanges = [];
+
+        $.ajax({
+          url: '/api/todos',
+          type: 'GET' 
+        })
+        .done(this.setTodos_.bind(this))
+        .fail(errorLogger);
+    };
+
+    TodoModel.prototype.setTodos_ = function (todos) {
+        this.todos = todos;
+        this.inform();
+    };
+
+    TodoModel.prototype.appendTodo_ = function (todo) {
+        this.todos = this.todos.concat(todo);
+        this.inform();
+    };
+
+    TodoModel.prototype.removeTodo_ = function (todo) {
+        this.todos = this.todos.filter(function (candidate) {
+            return candidate !== todo;
+        });
+        this.inform();
     };
 
     TodoModel.prototype.subscribe = function (onChange) {
@@ -24,13 +50,13 @@
     };
 
     TodoModel.prototype.addTodo = function (title) {
-        this.todos = this.todos.concat({
-            id: Utils.uuid(),
-            title: title,
-            completed: false
-        });
-
-        this.inform();
+        $.ajax({
+          url: '/api/todos',
+          type: 'POST',
+          data: {title: title, completed: false}
+        })
+        .done(this.appendTodo_.bind(this))
+        .fail(errorLogger);
     };
 
     TodoModel.prototype.toggleAll = function (checked) {
@@ -56,14 +82,22 @@
     };
 
     TodoModel.prototype.destroy = function (todo) {
-        this.todos = this.todos.filter(function (candidate) {
-            return candidate !== todo;
-        });
-
-        this.inform();
+        $.ajax({
+          url: '/api/todos/' + todo.id,
+          type: 'DELETE',
+        })
+        .done(this.removeTodo_.bind(this, todo))
+        .fail(errorLogger);
     };
 
     TodoModel.prototype.save = function (todoToSave, text) {
+        $.ajax({
+          url: '/api/todos/' + todoToSave.id,
+          type: 'PUT',
+          data: {title: text}
+        })
+        .done(this.appendTodo_.bind(this))
+        .fail(errorLogger);
         this.todos = this.todos.map(function (todo) {
             return todo !== todoToSave ? todo : Utils.extend({}, todo, {title: text});
         });
