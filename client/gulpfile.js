@@ -71,6 +71,10 @@ gulp.task('db:migrate',
   shell.task('node ../node_modules/db-migrate/bin/db-migrate up -m ../server/db/migrations/ --config ../server/db/config.json -e development --verbose')
 );
 
+gulp.task('db:drop',
+  shell.task('node ../node_modules/db-migrate/bin/db-migrate down -m ../server/db/migrations/ --config ../server/db/config.json -e development --verbose')
+);
+
 // task declaration
 gulp.task('build', ['clean', 'html', 'css', 'javascript']);
 gulp.task('development', ['build', 'livereload', 'watch']);
