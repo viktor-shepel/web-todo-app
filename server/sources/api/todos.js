@@ -43,7 +43,7 @@ function updateTodo(request, response, next) {
 function deleteTodo(request, response, next) {
   TodosModel.destroy({where: {id: Number(request.params.id)}})
   .then(function(data) {
-    response.send(data);
+    response.send(204);
   }, function(error) {
     console.error(error);
   });
