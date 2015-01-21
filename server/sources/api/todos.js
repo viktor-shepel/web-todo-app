@@ -25,8 +25,6 @@ function deleteTodo(request, response, next) {
   console.log('delete');
 }
 
-console.log(express.Router());
-
 module.exports = express.Router()
   .get('/todos', getAllTodos)
   .get('/todos/:id', getTodosById)
