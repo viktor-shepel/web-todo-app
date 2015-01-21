@@ -37,7 +37,6 @@ function updateTodo(request, response, next) {
   }, function(error) {
     console.error(error);
   });
-  console.log('update');
 }
 
 function deleteTodo(request, response, next) {
