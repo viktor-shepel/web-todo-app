@@ -7,20 +7,24 @@ var browserify = require('browserify');
 var reactify = require('reactify');
 
 var SOURCE = {
-  FOLDER: './client/sources',
-  MARKUPS: './client/sources/**/*.html',
-  STYLES: './client/sources/**/*.css',
-  SCRIPTS: './client/sources/**/*.jsx',
-  APPLICATION_VIEW: 'index.html',
-  APPLICATION_STYLE: 'application.css',
-  APPLICATION_SCRIPT: 'application.jsx'
+  CLIENT: {
+    FOLDER: './client/sources',
+    MARKUPS: './client/sources/**/*.html',
+    STYLES: './client/sources/**/*.css',
+    SCRIPTS: './client/sources/**/*.jsx',
+    APPLICATION_VIEW: 'index.html',
+    APPLICATION_STYLE: 'application.css',
+    APPLICATION_SCRIPT: 'application.jsx'
+  }
 };
 
 var BUILD = {
-  FOLDER: './client/build',
-  APPLICATION_VIEW: 'index.html',
-  APPLICATION_STYLE: 'application.css',
-  APPLICATION_SCRIPT: 'application.js'
+  CLIENT: {
+    FOLDER: './client/build',
+    APPLICATION_VIEW: 'index.html',
+    APPLICATION_STYLE: 'application.css',
+    APPLICATION_SCRIPT: 'application.js'
+  }
 };
 
 var SERVER_PORT = 3000;
@@ -37,43 +41,43 @@ function setupProxy() {
 
 // task definition
 gulp.task('clean', function() {
-  gulp.src(BUILD.FOLDER)
+  gulp.src(BUILD.CLIENT.FOLDER)
   .pipe(clean());
 });
 
 gulp.task('html', function() {
-  gulp.src(SOURCE.FOLDER + '/' + SOURCE.APPLICATION_VIEW)
-  .pipe(gulp.dest(BUILD.FOLDER))
+  gulp.src(SOURCE.CLIENT.FOLDER + '/' + SOURCE.CLIENT.APPLICATION_VIEW)
+  .pipe(gulp.dest(BUILD.CLIENT.FOLDER))
   .pipe(connect.reload());
 });
 
 gulp.task('css', function() {
-  gulp.src(SOURCE.FOLDER + '/' + SOURCE.APPLICATION_STYLE)
-  .pipe(gulp.dest(BUILD.FOLDER))
+  gulp.src(SOURCE.CLIENT.FOLDER + '/' + SOURCE.CLIENT.APPLICATION_STYLE)
+  .pipe(gulp.dest(BUILD.CLIENT.FOLDER))
   .pipe(connect.reload());
 });
 
 gulp.task('javascript', function() {
   browserify({
-    entries: SOURCE.FOLDER + '/' + SOURCE.APPLICATION_SCRIPT,
+    entries: SOURCE.CLIENT.FOLDER + '/' + SOURCE.CLIENT.APPLICATION_SCRIPT,
     debug: true
   })
   .transform(reactify)
   .bundle()
-  .pipe(source(BUILD.APPLICATION_SCRIPT))
-  .pipe(gulp.dest(BUILD.FOLDER))
+  .pipe(source(BUILD.CLIENT.APPLICATION_SCRIPT))
+  .pipe(gulp.dest(BUILD.CLIENT.FOLDER))
   .pipe(connect.reload());
 });
 
 gulp.task('watch', function() {
-  gulp.watch(SOURCE.MARKUPS, ['html']);
-  gulp.watch(SOURCE.STYLES, ['css']);
-  gulp.watch(SOURCE.SCRIPTS, ['javascript']);
+  gulp.watch(SOURCE.CLIENT.MARKUPS, ['html']);
+  gulp.watch(SOURCE.CLIENT.STYLES, ['css']);
+  gulp.watch(SOURCE.CLIENT.SCRIPTS, ['javascript']);
 });
 
 gulp.task('livereload', function() {
   connect.server({
-    root: BUILD.FOLDER,
+    root: BUILD.CLIENT.FOLDER,
     port: PROXY_PORT,
     livereload: true,
     middleware: function(connect, o) {
