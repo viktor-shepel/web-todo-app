@@ -3,29 +3,29 @@
     'use strict';
 
     var Utils = require('./utils.js');
-    var $ = require('jquery-browserify');
     var errorLogger = console.log.bind(console);
     // Generic "model" object. You can use whatever
     // framework you want. For this application it
     // may not even be worth separating this logic
     // out, but we do this to demonstrate one way to
     // separate out parts of your application.
-    var TodoModel = function (key) {
+    var TodoModel = function (key, data_provider) {
         this.key = key;
         this.todos = [];
         this.onChanges = [];
-
-        $.ajax({
-          url: '/api/todos',
-          type: 'GET' 
-        })
-        .done(this.setTodos_.bind(this))
-        .fail(errorLogger);
+        this.data_provider_ = data_provider;
+        this.fetchLatestTodos_();
     };
 
     TodoModel.prototype.setTodos_ = function (todos) {
         this.todos = todos;
         this.inform();
+    };
+
+    TodoModel.prototype.fetchLatestTodos_ = function () {
+        this.data_provider_.getTodoList()
+        .done(this.setTodos_.bind(this))
+        .fail(errorLogger);
     };
 
     TodoModel.prototype.appendTodo_ = function (todo) {
@@ -50,11 +50,7 @@
     };
 
     TodoModel.prototype.addTodo = function (title) {
-        $.ajax({
-          url: '/api/todos',
-          type: 'POST',
-          data: {title: title, completed: false}
-        })
+        this.data_provider_.createTodo({title: title, completed: false})
         .done(this.appendTodo_.bind(this))
         .fail(errorLogger);
     };
@@ -82,27 +78,16 @@
     };
 
     TodoModel.prototype.destroy = function (todo) {
-        $.ajax({
-          url: '/api/todos/' + todo.id,
-          type: 'DELETE',
-        })
+        this.data_provider_.deleteTodo(todo)
         .done(this.removeTodo_.bind(this, todo))
         .fail(errorLogger);
     };
 
     TodoModel.prototype.save = function (todoToSave, text) {
-        $.ajax({
-          url: '/api/todos/' + todoToSave.id,
-          type: 'PUT',
-          data: {title: text}
-        })
-        .done(this.appendTodo_.bind(this))
+        todoToSave.title = text;
+        this.data_provider_.updateTodo(todoToSave)
+        .done(this.fetchLatestTodos_.bind(this))
         .fail(errorLogger);
-        this.todos = this.todos.map(function (todo) {
-            return todo !== todoToSave ? todo : Utils.extend({}, todo, {title: text});
-        });
-
-        this.inform();
     };
 
     TodoModel.prototype.clearCompleted = function () {

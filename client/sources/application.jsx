@@ -7,6 +7,7 @@
     var TodoItem = require('./todoItem.jsx');
     var TodoModel = require('./todoModel.js');
     var RecordState = require('./record-state.js');
+    var TodoProviderDB = require('./to-do-provider-db.jsx');
 
 
     var ENTER_KEY = 13;
@@ -160,7 +161,7 @@
         }
     });
 
-    var model = new TodoModel('react-todos');
+    var model = new TodoModel('react-todos', new TodoProviderDB()); // should be handled by DependecyInjection system
 
     function render() {
         React.render(
