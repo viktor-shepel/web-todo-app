@@ -5,7 +5,8 @@ module.exports = function(sequelize) {
 
   var Todos = sequelize.define('todos', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true},
-    message: Sequelize.STRING
+    title: Sequelize.STRING,
+    completed: Sequelize.BOOLEAN
   }, {
     underscored: true
   });
